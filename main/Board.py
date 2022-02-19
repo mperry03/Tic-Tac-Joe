@@ -72,7 +72,8 @@ class BaseBoard(Board):
     def make_move(self, coords, player):
         if not self.is_valid_move(coords):
             return False
-        
+        self.board_states[coords[0]] = player
+        return True
 
 class RecursiveBoard(Board):
 
