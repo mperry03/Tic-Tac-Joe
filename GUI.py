@@ -10,12 +10,15 @@ def startWindow(window):
     start_Title = Text(Point(5.5, 9.5), 'Menu')
     start_Title.setStyle('bold')
     start_Title.setSize(36)
-    multiPlayer = Rectangle(Point(4, 4), Point(7, 7))
+    multiPlayer = Rectangle(Point(4, 7), Point(7, 8))
     multiPlayer.draw(window)
+    playJoe = Rectangle(Point(4, 5), Point(7, 6))
+    playJoe.draw(window)
+    help = Rectangle(Point(4, 3), Point(7, 4))
+    help.draw(window)
     start_Title.draw(window)
     if window.getMouse():
         start_Title.undraw()
-        multiPlayer.undraw()
         gameWindow(window)
 
 def helpWindow(window):
