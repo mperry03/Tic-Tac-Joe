@@ -7,19 +7,57 @@ def main():
     startWindow(win)
 
 def startWindow(window):
+    # Set the title for the start menu
     start_Title = Text(Point(5.5, 9.5), 'Menu')
     start_Title.setStyle('bold')
     start_Title.setSize(36)
+
+    # Create a button to choose local multiplayer mode
     multiPlayer = Rectangle(Point(4, 7), Point(7, 8))
     multiPlayer.draw(window)
+
+    # Create a button to play against AI
     playJoe = Rectangle(Point(4, 5), Point(7, 6))
     playJoe.draw(window)
+
+    # Creates help button
     help = Rectangle(Point(4, 3), Point(7, 4))
     help.draw(window)
+
+    # Draws start menu
     start_Title.draw(window)
-    if window.getMouse():
-        start_Title.undraw()
-        gameWindow(window)
+
+    # Determines position of mouse click
+    mouse_Position = window.getMouse()
+    x = mouse_Position.getX()
+    y = mouse_Position.getY()
+
+    # Decides if you click on the multiplayer button
+    if x >= 4 and x <= 7:
+        if y >= 7 and y <= 8:
+            start_Title.undraw()
+            multiPlayer.undraw()
+            playJoe.undraw()
+            help.undraw()
+            gameWindow(window)
+
+    # Decides if you click on the AI button
+    if x >= 4 and x <= 7:
+        if y >= 5 and y <= 6:
+            start_Title.undraw()
+            multiPlayer.undraw()
+            playJoe.undraw()
+            help.undraw()
+            gameWindow(window)
+
+    # Decides if you click on the help button
+    if x >= 4 and x <= 7:
+        if y >= 3 and y <= 4:
+            start_Title.undraw()
+            multiPlayer.undraw()
+            playJoe.undraw()
+            help.undraw()
+            helpWindow(window)
 
 def helpWindow(window):
     help_Title = Text(Point(5.5, 9.5), 'Help Menu')
@@ -65,11 +103,28 @@ def gameWindow(window):
 
     All.append(title)
 
+    quit_Button = Text(Point(9.5, 10.5), 'Quit')
+    quit_Button.setTextColor('red')
+    quit_Button.setSize(18)
+    quit_Button.setStyle('bold')
+    quit_Button.draw(window)
+
+    quit_Box = Rectangle(Point(9, 10.25), Point(10, 10.75))
+    quit_Box.setOutline('red')
+    quit_Box.draw(window)
+
+    quit_position = window.getMouse()
+    quit_x = quit_position.getX()
+    quit_y = quit_position.getY()
+
     # Undraw the Game Window
-    if window.getMouse():
-        for item in All:
-            item.undraw()
-        startWindow(window)
+    if 9 <= quit_x and quit_x <= 10:
+        if 10.25 <= quit_y and quit_y <= 10.75:
+            for item in All:
+                item.undraw()
+            quit_Box.undraw()
+            quit_Button.undraw()
+            startWindow(window)
 
     window.getMouse()
     window.close()
