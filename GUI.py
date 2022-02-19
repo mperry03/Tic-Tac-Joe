@@ -27,6 +27,11 @@ def main():
         item.setWidth(3)
         item.draw(win)
 
+    title = Text(Point(5.5,10.5), 'Ultimate Tic-Tac-Toe')
+    title.setStyle('bold')
+    title.setSize(24)
+    title.draw(win)
+
     win.getMouse()
     win.close()
 
