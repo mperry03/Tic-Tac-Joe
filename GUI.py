@@ -4,7 +4,24 @@ def main():
 
     win = GraphWin("Tic-Tac-Joe", 800, 800)
     win.setCoords(0, 0, 11, 11)
-    gameWindow(win)
+    startWindow(win)
+
+def startWindow(window):
+    start_Title = Text(Point(5.5, 9.5), 'Menu')
+    start_Title.setStyle('bold')
+    start_Title.setSize(36)
+    multiPlayer = Rectangle(Point(4, 4), Point(7, 7))
+    multiPlayer.draw(window)
+    start_Title.draw(window)
+    if window.getMouse():
+        start_Title.undraw()
+        gameWindow(window)
+
+def helpWindow(window):
+    help_Title = Text(Point(5.5, 9.5), 'Help Menu')
+    help_Title.setStyle('bold')
+    help_Title.setSize(36)
+    help_Title.draw(window)
 
 def gameWindow(window):
     BB_line1 = Line(Point(4, 1), Point(4, 10))
@@ -36,7 +53,7 @@ def gameWindow(window):
     title.draw(window)
 
     window.getMouse()
-    window.close()
+    #window.close()
 
 main()
 
