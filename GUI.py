@@ -61,7 +61,6 @@ def gameWindow(window):
     title.draw(window)
 
     All.append(title)
-    print(All)
 
     # Undraw the Game Window
     if window.getMouse():
