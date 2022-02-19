@@ -9,7 +9,16 @@ def instantiate_board(depth):
 
 
 class Board(ABC):
-    WIN_PATTERNS = "test" #TODO
+    WIN_PATTERNS = [
+        ([0, 0], [0, 1], [0, 2]),
+        ([1, 0], [1, 1], [1, 2]),
+        ([2, 0], [2, 1], [2, 2]),
+        ([0, 0], [1, 0], [2, 0]),
+        ([0, 1], [1, 1], [2, 1]),
+        ([0, 2], [1, 2], [2, 2]),
+        ([0, 0], [1, 1], [2, 2]),
+        ([0, 2], [1, 1], [2, 0]),
+    ]
 
     @abstractmethod
     def __init__(self, depth: int):
@@ -20,6 +29,8 @@ class Board(ABC):
         pass
 
     @abstractmethod
+    def get_board_state(self):
+        pass
 
 
 class BaseBoard(Board):
