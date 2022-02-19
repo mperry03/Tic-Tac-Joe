@@ -35,11 +35,11 @@ class Board(ABC):
         pass
 
     @abstractmethod
-    def is_valid_move(self, coords, player):
+    def is_valid_move(self, coords):
         pass
 
     @abstractmethod
-    def make_move(self, coords, player):
+    def make_move(self, coords):
         pass
 
     @abstractmethod
@@ -71,17 +71,14 @@ class BaseBoard(Board):
     coords is an array of numbers 0-8 representing coordinates in different layers
     coords[0] is the coordinate on the smallest board, coords[1] is the layer up from that, etc.
     """
-    def is_valid_move(self, coords, player):
-        return self.board_states[coords[0]] == '_' and player == self.turn
+    def is_valid_move(self, coords):
+        return self.board_states[coords[-1]] == '_'
 
-    """
-    player is 'X' or 'O'
-    """
-    def make_move(self, coords, player):
-        if not self.is_valid_move(coords, player) or self.state != '_':
+    def make_move(self, coords):
+        if not self.is_valid_move(coords) or self.state != '_':
             return False
 
-        self.board_states[coords[0]] = player
+        self.board_states[coords[-1]] = self.turn
 
         # Check for ties or wins
         self.move_count += 1
@@ -105,9 +102,8 @@ class RecursiveBoard(Board):
         self.depth = depth
         self.board_states = ['_'] * 9
         self.valid_boards = [True] * 9
-        self.move_count = 0
-        self.tied = False
         self.turn = 'X'
+        self.state = '_'
 
         self.boards = []
         for _ in range(9):
@@ -119,43 +115,39 @@ class RecursiveBoard(Board):
     def update_board_state(self):
         # Update the states of the subboards first
         for i in range(9):
-            self.board_states[i] = self.boards[i].update_board_state()
+            self.boards[i].update_board_state()
+            self.board_states[i] = self.boards[i].get_state()
 
         for player in self.PLAYERS:
             for pattern in self.WIN_PATTERNS:
                 if self.board_states[pattern[0]] == self.board_states[pattern[1]] == self.board_states[pattern[2]] == player:
-                    return player
-        return '_'
+                    self.state = player
+        flag = True
+        for state in self.board_states:
+            if state == '_':
+                flag = False
+        if flag:
+            self.state = 'T'
 
-    def is_valid_move(self, coords, player):
+    def is_valid_move(self, coords):
         # Check that:
-        # State of desired subboard is not won
         # The move is valid within the subboard
         # This is a legal subboard to move to (based on previous moves)
-        # It is this player's turn
-        return self.board_states[coords[-1]] == '-' \
-               and self.boards[coords[-1]].is_valid_move(coords[:-1]) \
-               and self.valid_boards[coords[-1]] \
-               and player == self.turn
+        return self.boards[coords[-1]].is_valid_move(coords[:-1]) \
+               and self.valid_boards[coords[-1]]
 
     """
     Returns if the requested move was successful (i.e. was it valid)
     """
-    def make_move(self, coords, player):
-        if not self.is_valid_move(coords, player):
+    def make_move(self, coords):
+        if not self.is_valid_move(coords) or self.state != '_':
             return False
 
-        current_coord = coords[-1]
-        current_subboard = self.boards[current_coord]
-        current_subboard.make_move(coords[:-1], player)
+        # Make the move
+        self.boards[coords[-1]].make_move(coords[:-1])
 
-        # Check for ties
-        self.move_count += 1
-        if self.move_count == 9:
-            self.tied = True
-
-        # Update subboard states
-        self.board_states = [board.update_board_state() for board in self.boards]
+        # Check for ties or wins
+        self.update_board_state()
 
         # Switch turn
         if self.turn == 'X':
@@ -163,65 +155,14 @@ class RecursiveBoard(Board):
         else:
             self.turn = 'X'
 
-        # Update valid subboards for the next move
-        if not current_subboard.tied and self.board_states[current_coord] == '_':
+        # Update valid boards
+        if self.boards[coords[-1]].get_state() == '_':
             self.valid_boards = [False] * 9
-            self.valid_boards[current_coord] = True
+            self.valid_boards[coords[-2]] = True
         else:
             self.valid_boards = [True] * 9
+
         return True
 
-
-T = instantiate_board(0)
-print(T)
-print()
-
-print(T.make_move([0], 'X'))
-print(T.get_state())
-print(T)
-print()
-
-print(T.make_move([1], 'O'))
-print(T.get_state())
-print(T)
-print()
-
-print(T.make_move([2], 'X'))
-print(T.get_state())
-print(T)
-print()
-
-print(T.make_move([3], 'O'))
-print(T.get_state())
-print(T)
-print()
-
-print(T.make_move([4], 'X'))
-print(T.get_state())
-print(T)
-print()
-
-print(T.make_move([6], 'O'))
-print(T.get_state())
-print(T)
-print()
-
-print(T.make_move([5], 'X'))
-print(T.get_state())
-print(T)
-print()
-
-print(T.make_move([8], 'O'))
-print(T.get_state())
-print(T)
-print()
-
-print(T.make_move([7], 'X'))
-print(T.get_state())
-print(T)
-print()
-
-print(T.make_move([7], 'X'))
-print(T.get_state())
-print(T)
-print()
+    def get_state(self):
+        return self.state
