@@ -28,8 +28,8 @@ def startWindow(window):
     joe_Text.draw(window)
 
     # Creates help button
-    help = Rectangle(Point(4, 3), Point(7, 4))
-    help.draw(window)
+    helps = Rectangle(Point(4, 3), Point(7, 4))
+    helps.draw(window)
     help_Text = Text(Point(5.5, 3.5), 'Rules')
     help_Text.setSize(30)
     help_Text.draw(window)
@@ -37,67 +37,50 @@ def startWindow(window):
     # Draws start menu
     start_Title.draw(window)
 
-    quit_Button = Text(Point(9.5, 10.5), 'Quit')
-    quit_Button.setTextColor('red')
-    quit_Button.setSize(18)
-    quit_Button.setStyle('bold')
-    quit_Button.draw(window)
+    #instantiate quit button
+    #---------------------
+    quit_Text = Text(Point(9.5, 10.5), 'Quit')
+    quit_Text.setTextColor('red')
+    quit_Text.setSize(18)
+    quit_Text.setStyle('bold')
+    quit_Text.draw(window)
 
     quit_Box = Rectangle(Point(9, 10.25), Point(10, 10.75))
     quit_Box.setOutline('red')
     quit_Box.draw(window)
+    #------------------------
+    playing = 1
 
-    # Determines position of mouse click
-    mouse_Position = window.getMouse()
-    x = mouse_Position.getX()
-    y = mouse_Position.getY()
+    while playing == 1:
+        playing = 0
+        mouse = window.getMouse()
+        x = mouse.getX()
+        y = mouse.getY()
 
-
-    # Undraw the Game Window (Quit button)
-    if 9 <= x and x <= 10:
-        if 10.25 <= y and y <= 10.75:
+        if (9 <= x <= 10) and (10.25 <= y <= 10.75):
             window.close()
 
-    # Decides if you click on the multiplayer button
-    if x >= 4 and x <= 7:
-        if y >= 7 and y <= 8:
-            start_Title.undraw()
-            multiPlayer.undraw()
-            multi_Text.undraw()
-            playJoe.undraw()
-            joe_Text.undraw()
-            help.undraw()
-            help_Text.undraw()
+        # Decides if you click on the multiplayer button
+        elif (4 <= x <= 7) and (7 <= y <= 8):
+            clearScreen(start_Title, multiPlayer, multi_Text, playJoe, joe_Text, helps, help_Text)
             gameWindow(window)
+            ## ENABLE 2P CAPABILITY
 
-    # Decides if you click on the AI button
-    if x >= 4 and x <= 7:
-        if y >= 5 and y <= 6:
-            start_Title.undraw()
-            multiPlayer.undraw()
-            multi_Text.undraw()
-            playJoe.undraw()
-            joe_Text.undraw()
-            help.undraw()
-            help_Text.undraw()
+        # Decides if you click on the AI button
+        elif (4 <= x <= 7) and (5 <= y <= 6):
+            clearScreen(start_Title, multiPlayer, multi_Text, playJoe, joe_Text, helps, help_Text)
             gameWindow(window)
+            ## ENABLE AI CAPABILITY
 
-    # Decides if you click on the help button
-    if x >= 4 and x <= 7:
-        if y >= 3 and y <= 4:
-            start_Title.undraw()
-            multiPlayer.undraw()
-            multi_Text.undraw()
-            playJoe.undraw()
-            joe_Text.undraw()
-            help.undraw()
-            help_Text.undraw()
+        # Decides if you click on the help button
+        elif (4 <= x <= 7) and (3 <= y <= 4):
+            clearScreen(start_Title, multiPlayer, multi_Text, playJoe, joe_Text, helps, help_Text)
             helpWindow(window)
 
-    # if window.getMouse():
-    #     start_Title.undraw()
-    #     multiPlayer.undraw()
-    #     gameWindow(window)
+        else:
+            playing = 1
+
+
 
 def helpWindow(window):
     #Create title for help menu
@@ -106,34 +89,23 @@ def helpWindow(window):
     help_Title.setSize(36)
     help_Title.draw(window)
 
-
     #Import image of the rules
     rules_Image = Image(Point(5.5, 5.5), 'rules.png')
     rules_Image.draw(window)
 
-    #Creates Quit Button
-    quit_Button = Text(Point(9.5, 10.5), 'Quit')
-    quit_Button.setTextColor('red')
-    quit_Button.setSize(18)
-    quit_Button.setStyle('bold')
-    quit_Button.draw(window)
-
-    quit_Box = Rectangle(Point(9, 10.25), Point(10, 10.75))
-    quit_Box.setOutline('red')
-    quit_Box.draw(window)
-
-    quit_position = window.getMouse()
-    quit_x = quit_position.getX()
-    quit_y = quit_position.getY()
-
-    # Undraw the Game Window
-    if 9 <= quit_x and quit_x <= 10:
-        if 10.25 <= quit_y and quit_y <= 10.75:
+    # Undraw the help Window
+    playing = 1
+    while playing == 1:
+        playing = 0
+        if quitCurrentScreen(window):
             help_Title.undraw()
-            quit_Box.undraw()
-            quit_Button.undraw()
             rules_Image.undraw()
             startWindow(window)
+
+        else:
+            playing = 1
+
+
 
 ########################__DRAW GAME WINDOW__###################################
 
@@ -178,57 +150,50 @@ def gameWindow(window):
         getPosition(window, turn, All)
         turn = (turn + 1) % 2
 
-    quit_Button = Text(Point(9.5, 10.5), 'Quit')
-    quit_Button.setTextColor('red')
-    quit_Button.setSize(18)
-    quit_Button.setStyle('bold')
-    quit_Button.draw(window)
 
-    quit_Box = Rectangle(Point(9, 10.25), Point(10, 10.75))
-    quit_Box.setOutline('red')
-    quit_Box.draw(window)
-
-    quit_position = window.getMouse()
-    quit_x = quit_position.getX()
-    quit_y = quit_position.getY()
 
     # Undraw the Game Window
-    if 9 <= quit_x and quit_x <= 10:
-        if 10.25 <= quit_y and quit_y <= 10.75:
-            for item in All:
-                item.undraw()
-            quit_Box.undraw()
-            quit_Button.undraw()
-            startWindow(window)
 
-    window.getMouse()
+
+    #window.getMouse()
 
 # Connect Back End to Front End by Returning [sb,bb]
 # should be edited to impliment user turn ^ drawing to screen
 # ---------------------------
 def getPosition(window, turn, list):
-    mouse = window.getMouse()
-    xPos = mouse.getX()
-    yPos = mouse.getY()
+    playing = 1
 
-    bX = checkCoordBig(xPos)
-    bY = checkCoordBig(yPos)
-    bbPos = bX + 3 * bY
-    xTemp = xPos
-    yTemp = yPos
-    while (xTemp > 4):
-        xTemp = xTemp / 3
-    while (yTemp > 4):
-        yTemp = yTemp / 3
+    while playing == 1:
+        playing = 0
+        mouse = window.getMouse()
+        xPos = mouse.getX()
+        yPos = mouse.getY()
 
-    sX = checkCoordSmall(xTemp)
-    sY = checkCoordSmall(yTemp)
-    sbPos = sX + 3 * sY
-    if sbPos <= 8 and bbPos <= 8:
-        print([sbPos, bbPos])
-        placeSym(xPos, yPos, turn, window, list)
-    else:
-        getPosition(window)
+        bX = checkCoordBig(xPos)
+        bY = checkCoordBig(yPos)
+        bbPos = bX + 3 * bY
+        xTemp = xPos
+        yTemp = yPos
+        while (xTemp > 4):
+            xTemp = xTemp / 3
+        while (yTemp > 4):
+            yTemp = yTemp / 3
+
+        sX = checkCoordSmall(xTemp)
+        sY = checkCoordSmall(yTemp)
+        sbPos = sX + 3 * sY
+        if sbPos <= 8 and bbPos <= 8:
+            print([sbPos, bbPos])
+            placeSym(xPos, yPos, turn, window, list)
+
+        elif (9 <= xPos <= 10) and (10.25 <= yPos <= 10.75):
+            for item in list:
+                item.undraw()
+            startWindow(window)
+
+        else:
+            playing = 1
+
 
 # Helper Function for Get Position
 # ----------------------------
@@ -272,7 +237,21 @@ def placeSym(xPos, yPos, turn, window, list):
         oh.draw(window)
         list.append(oh)
 
+def quitCurrentScreen(window):
 
+    quit_position = window.getMouse()
+    quit_x = quit_position.getX()
+    quit_y = quit_position.getY()
 
+    return (9 <= quit_x <= 10) and (10.25 <= quit_y <= 10.75)
+
+def clearScreen(start_Title, multiPlayer, multi_Text, playJoe, joe_Text, helps, help_Text):
+    start_Title.undraw()
+    multiPlayer.undraw()
+    multi_Text.undraw()
+    playJoe.undraw()
+    joe_Text.undraw()
+    helps.undraw()
+    help_Text.undraw()
 
 main()
