@@ -6,9 +6,10 @@ def main():
 
     win = GraphWin("Tic-Tac-Joe", 800, 800)
     win.setCoords(0, 0, 11, 11)
-    startWindow(win)
+    startWindow(win, 1)
 
-def startWindow(window):
+def startWindow(window, first):
+
 
     # Set the title for the start menu
     start_Title = Text(Point(5.5, 9.5), 'Ultimate Tic-Tac-Toe')
@@ -41,15 +42,17 @@ def startWindow(window):
 
     #instantiate quit button
     #---------------------
-    quit_Text = Text(Point(9.5, 10.5), 'Quit')
-    quit_Text.setTextColor('red')
-    quit_Text.setSize(18)
-    quit_Text.setStyle('bold')
-    quit_Text.draw(window)
+    if first:
+        quit_Text = Text(Point(9.5, 10.5), 'Quit')
+        quit_Text.setTextColor('red')
+        quit_Text.setSize(18)
+        quit_Text.setStyle('bold')
+        quit_Text.draw(window)
 
-    quit_Box = Rectangle(Point(9, 10.25), Point(10, 10.75))
-    quit_Box.setOutline('red')
-    quit_Box.draw(window)
+        quit_Box = Rectangle(Point(9, 10.25), Point(10, 10.75))
+        quit_Box.setOutline('red')
+        quit_Box.draw(window)
+        first = 0
     #------------------------
     playing = 1
 
@@ -66,7 +69,7 @@ def startWindow(window):
         elif (4 <= x <= 7) and (7 <= y <= 8):
             clearScreen(start_Title, multiPlayer, multi_Text, playJoe, joe_Text, helps, help_Text)
             gameWindow(window)
-            ## ENABLE 2P CAPABILITY
+
 
         # Decides if you click on the AI button
         elif (4 <= x <= 7) and (5 <= y <= 6):
@@ -102,7 +105,7 @@ def helpWindow(window):
         if quitCurrentScreen(window):
             help_Title.undraw()
             rules_Image.undraw()
-            startWindow(window)
+            startWindow(window, 0)
 
         else:
             playing = 1
@@ -231,7 +234,7 @@ def gameWindow(window):
             for item in All:
                 playing = 0
                 item.undraw()
-            startWindow(window)
+            startWindow(window, 0)
 
 
 # Connect Back End to Front End by Returning [sb,bb]
