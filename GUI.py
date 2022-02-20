@@ -2,7 +2,7 @@ from graphics import *
 from main.Board import *
 import time
 import random
-#from main.tictacjoe import *
+from main.tictacjoe import *
 
 
 def main():
@@ -127,7 +127,7 @@ def helpWindow(window):
 def gameWindow(window, AI):
 
     bigBoard = instantiate_board(1)
-    #joe = instantiate_AI(bigBoard)
+    joe = instantiate_AI()
 
 
     # Draw the big board
@@ -218,19 +218,32 @@ def gameWindow(window, AI):
     turn = 1
     playing = 1
     while playing:
-        mouse = window.getMouse()
-        xPos = mouse.getX()
-        yPos = mouse.getY()
-        vals = getPosition(xPos, yPos)
+        if AI == 0 or turn == 1:
+            mouse = window.getMouse()
+            xPos = mouse.getX()
+            yPos = mouse.getY()
+            vals = getPosition(xPos, yPos)
         if turn:
             player = 'X'
         else:
             player = 'O'
-        if vals.getX() <= 8 and vals.getY() <= 8:
-            place = [int(vals.getX()),int(vals.getY())]
-            #if AI == 1 and player == 'O':
-                #time.sleep(1 + random.random())
-                #place = joe.chooseMove(bigBoard)
+        if (vals.getX() <= 8 and vals.getY() <= 8) or (AI == 1 and player == 'O'):
+            if AI == 0 or player == 'X':
+                place = [int(vals.getX()),int(vals.getY())]
+            else:
+                time.sleep(1 + random.random())
+                print("joe played")
+                place = joe.chooseMove(bigBoard)
+                small = place[0]
+                big = place[1]
+                bY = big // 3
+                bX = big % 3
+                sY = small // 3
+                sX = small % 3
+                xPos = 3*bX + sX + 1.49
+                yPos = 3*bY + sY + 1.49
+                print(place, xPos, yPos)
+
             validMove = bigBoard.make_move(place, player)
             if validMove:
                 turnStatement(window, turn, turn_text1, turn_text2)
@@ -239,8 +252,9 @@ def gameWindow(window, AI):
                 decidedBoard(window, fillers, statusArray, All)
                 winStatus = bigBoard.get_state()
                 validBoards = bigBoard.get_valid_boards()
+                print(validBoards)
                 targetBoard(window, targets, validBoards)
-                checkWin(window, superFiller, winStatus, targets, All)
+                AI = checkWin(window, superFiller, winStatus, targets, All, AI)
                 turn = (turn + 1) % 2
 
 
@@ -397,9 +411,13 @@ def decidedBoard(window, fillerArray, boardStates, list):
                 dash.draw(window)
 
 
-def checkWin(window, fill, status, targets, list):
+def checkWin(window, fill, status, targets, list, AI):
+    if AI == 1:
+        val = 1
+
     if status != '_':
         time.sleep(1)
+        val = 0
         fill.draw(window)
         for box in targets:
             box.undraw()
@@ -444,5 +462,6 @@ def checkWin(window, fill, status, targets, list):
             draw.setSize(34)
             draw.draw(window)
 
+        return val
 
 main()

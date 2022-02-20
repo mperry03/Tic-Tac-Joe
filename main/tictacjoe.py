@@ -3,12 +3,13 @@ from main.Board import *
 import random
 #import time
 
+
+def instantiate_AI():
+    return AI()
+
 class AI():
 
-    def instantiate_AI(self):
-        return self
-
-    def chooseMove(board):
+    def chooseMove(self,board):
         possibleMoves = []
         for i in range(9):
             for j in range(9):
