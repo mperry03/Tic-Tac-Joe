@@ -62,16 +62,37 @@ def gameWindow(window):
 
     All.append(title)
 
-    # Undraw the Game Window
-    if window.getMouse():
-        for item in All:
-            item.undraw()
-        startWindow(window)
-
-    window.getMouse()
-    window.close()
+    for i in range(1000):
+        getPosition(window)
 
 
+
+def getPosition(window):
+    mouse = window.getMouse()
+    xPos = mouse.getX()
+    yPos = mouse.getY()
+    bX = checkCoord(xPos)
+    bY = checkCoord(yPos)
+    bbPos = bX + 3*bY
+    xTemp = (xPos % 3) * 3
+    yTemp = (yPos % 3) * 3
+    sX = checkCoord(xTemp)
+    sY = checkCoord(yTemp)
+    sbPos = sX + 3*sY
+    print([sbPos, bbPos])
+
+
+
+
+def checkCoord(pos):
+    if (1 <= pos <= 4):
+        return 0
+    elif (4 < pos <= 7):
+        return 1
+    elif (7 < pos <= 10):
+        return 2
+    else:
+        return ;
 
 
 main()
