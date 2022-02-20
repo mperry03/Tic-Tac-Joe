@@ -258,10 +258,17 @@ def gameWindow(window, AI):
 
         # Undraw the Game Window
         elif (9 <= xPos <= 10) and (10.25 <= yPos <= 10.75):
+            rect = Rectangle(Point(.9, 0), Point(10.2, 10.2))
+            rect.setWidth(0)
+            rect.setFill('white')
+            rect.draw(window)
             for item in All:
                 playing = 0
                 item.undraw()
+                End = False
+            rect.undraw()
             startWindow(window, 0)
+
     End = True
     while End:
         mouse = window.getMouse()
@@ -275,7 +282,7 @@ def gameWindow(window, AI):
             for item in All:
                 playing = 0
                 item.undraw()
-                End = False
+            End = False
             rect.undraw()
             startWindow(window, 0)
 
