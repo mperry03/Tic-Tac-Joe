@@ -49,4 +49,4 @@ class AI():
                         elif board[combo[j]] != player:
                             flag = False
                     if flag:
-
+                        valid_pairs.append((combo, i, player))
