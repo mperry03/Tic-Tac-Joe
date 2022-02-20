@@ -35,6 +35,7 @@ def gameWindow(window):
     BB_line3 = Line(Point(1, 4), Point(10, 4))
     BB_line4 = Line(Point(1, 7), Point(10, 7))
 
+    #Contains Everything on Game Window
     All = [BB_line1, BB_line2, BB_line3, BB_line4]
 
     # -------------------------------
@@ -59,32 +60,37 @@ def gameWindow(window):
     title.setStyle('bold')
     title.setSize(24)
     title.draw(window)
-
+    turn = 1
     All.append(title)
+    for i in range(81):
+        getPosition(window, turn, All)
+        turn = (turn + 1) % 2
 
-    getPosition(window)
 
 # Connect Back End to Front End by Returning [sb,bb]
 #should be edited to impliment user turn ^ drawing to screen
 #---------------------------
-def getPosition(window):
+def getPosition(window, turn, list):
     mouse = window.getMouse()
     xPos = mouse.getX()
     yPos = mouse.getY()
+
     bX = checkCoordBig(xPos)
     bY = checkCoordBig(yPos)
     bbPos = bX + 3*bY
-    #xTemp = (xPos % 3) * 3
-    while (xPos > 4):
-        xPos = xPos/3
-    while (yPos > 4):
-        yPos = yPos/3
-    #yTemp = (yPos % 3)+1 * 3
-    sX = checkCoordSmall(xPos)
-    sY = checkCoordSmall(yPos)
+    xTemp = xPos
+    yTemp = yPos
+    while (xTemp > 4):
+        xTemp = xTemp/3
+    while (yTemp > 4):
+        yTemp = yTemp/3
+
+    sX = checkCoordSmall(xTemp)
+    sY = checkCoordSmall(yTemp)
     sbPos = sX + 3*sY
     if sbPos <= 8 and bbPos <= 8:
         print([sbPos, bbPos])
+        placeSym(xPos, yPos, turn, window, list)
     else:
         getPosition(window)
 
@@ -112,14 +118,22 @@ def checkCoordBig(pos):
     else:
         return 100
 
+# Function for drawing x's and o's to GUI
 #-------------------
-#def placeSym(xPos, yPos, turn, window, list)
-   # placeX = round(xPos - .5) + .5
-   # placeY = round(yPos - .5) + .5
-   # if turn == 1
-   #     draw X
-   # elif turn == 2
-   #     draw O
+def placeSym(xPos, yPos, turn, window, list):
+    posX = round(xPos - .5) + .5
+    posY = round(yPos - .5) + .5
+    if turn == 1:
+        ex1 = Line(Point(posX-.4,posY+.4),Point(posX+.4,posY-.4))
+        ex2 = Line(Point(posX-.4,posY-.4),Point(posX+.4,posY+.4))
+        ex1.draw(window)
+        ex2.draw(window)
+        list.append(ex1)
+        list.append(ex2)
+    elif turn == 0:
+        oh = Circle(Point(posX, posY), .3)
+        oh.draw(window)
+        list.append(oh)
 
 
 
