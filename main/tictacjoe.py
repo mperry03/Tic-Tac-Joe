@@ -65,4 +65,9 @@ class AI():
                     if flag:
                         valid_pairs.append([combo, i, player])
         print(valid_pairs)
-        return valid_pairs
+        return valid_pair
+
+A = instantiate_AI()
+T = instantiate_board(0)
+print(T)
+print(A.get_viable_pairs(T))
