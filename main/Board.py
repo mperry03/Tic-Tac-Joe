@@ -160,3 +160,6 @@ class RecursiveBoard(Board):
 
     def get_subboard_states(self):
         return self.board_states
+
+    def get_subboards(self):
+        return self.boards
