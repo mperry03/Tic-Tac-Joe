@@ -1,5 +1,6 @@
 from graphics import *
 from main.Board import *
+import time
 
 def main():
 
@@ -163,6 +164,31 @@ def gameWindow(window):
     for box in targets:
         box.setOutline('red')
         box.setWidth(6)
+        All.append(box)
+
+    #Make Fillers
+    dither = .1
+    filler0 = Rectangle(Point(1+dither, 1+dither), Point(4-dither, 4-dither))
+    filler1 = Rectangle(Point(4+dither, 1+dither), Point(7-dither, 4-dither))
+    filler2 = Rectangle(Point(7+dither, 1+dither), Point(10-dither, 4-dither))
+    filler3 = Rectangle(Point(1+dither, 4+dither), Point(4-dither, 7-dither))
+    filler4 = Rectangle(Point(4+dither, 4+dither), Point(7-dither, 7-dither))
+    filler5 = Rectangle(Point(7+dither, 4+dither), Point(10-dither, 7-dither))
+    filler6 = Rectangle(Point(1+dither, 7+dither), Point(4-dither, 10-dither))
+    filler7 = Rectangle(Point(4+dither, 7+dither), Point(7-dither, 10-dither))
+    filler8 = Rectangle(Point(7+dither, 7+dither), Point(10-dither, 10-dither))
+    fillers = [filler0, filler1, filler2, filler3, filler4, filler5, filler6, filler7, filler8]
+    for box in fillers:
+        box.setFill('white')
+        #box.setOutline('black')
+        box.setWidth(0)
+        All.append(box)
+
+    superFiller = Rectangle(Point(.9,0),Point(10.2,10.2))
+    superFiller.setFill('white')
+    superFiller.setWidth(0)
+    All.append(superFiller)
+
 
     #Make Turn Statements
     turn_text1 = Text(Point(5.5, .75), 'It is P1s turn.')
@@ -191,8 +217,12 @@ def gameWindow(window):
             if validMove:
                 turnStatement(window, turn, turn_text1, turn_text2)
                 placeSym(xPos, yPos, turn, window, All)
+                statusArray = bigBoard.get_subboard_states()
+                decidedBoard(window, fillers, statusArray, All)
+                winStatus = bigBoard.get_state()
                 validBoards = bigBoard.get_valid_boards()
                 targetBoard(window, targets, validBoards)
+                checkWin(window, superFiller, winStatus, targets, All)
                 turn = (turn + 1) % 2
 
 
@@ -258,12 +288,18 @@ def placeSym(xPos, yPos, turn, window, list):
     if turn == 1:
         ex1 = Line(Point(posX - .3, posY + .3), Point(posX + .3, posY - .3))
         ex2 = Line(Point(posX - .3, posY - .3), Point(posX + .3, posY + .3))
+        ex1.setWidth(4)
+        ex2.setWidth(4)
+        ex1.setOutline('red')
+        ex2.setOutline('red')
         ex1.draw(window)
         ex2.draw(window)
         list.append(ex1)
         list.append(ex2)
     elif turn == 0:
         oh = Circle(Point(posX, posY), .3)
+        oh.setWidth(4)
+        oh.setOutline('blue')
         oh.draw(window)
         list.append(oh)
 
@@ -298,6 +334,72 @@ def targetBoard(window, targetArray, playables):
         targetArray[i].undraw()
         if playables[i]:
             targetArray[i].draw(window)
+
+
+def decidedBoard(window, fillerArray, boardStates, list):
+    for i in range(9):
+        if boardStates[i] != '_':
+            fillerArray[i].undraw()
+            fillerArray[i].draw(window)
+            yPos = (i // 3)*3 + 2.5
+            xPos = (i % 3)*3 + 2.5
+
+            if boardStates[i] == 'X':
+                c = 1.25
+                ex1 = Line(Point(xPos-c,yPos+c),Point(xPos+c,yPos-c))
+                ex2 = Line(Point(xPos+c,yPos+c),Point(xPos-c,yPos-c))
+                list.append(ex1)
+                list.append(ex2)
+                ex1.setWidth(8)
+                ex2.setWidth(8)
+                ex1.setOutline('red')
+                ex2.setOutline('red')
+                ex1.draw(window)
+                ex2.draw(window)
+
+            elif boardStates[i] == 'O':
+                oh = Circle(Point(xPos,yPos),1.25)
+                list.append(oh)
+                oh.setWidth(8)
+                oh.setOutline('blue')
+                oh.draw(window)
+            else:
+                dash = Line(Point(xPos-1,yPos), Point(xPos+1, yPos))
+                list.append(dash)
+                dash.setWidth(8)
+                dash.draw(window)
+
+
+def checkWin(window, fill, status, targets, list):
+    if status != '_':
+        time.sleep(1)
+        fill.draw(window)
+        for box in targets:
+            box.undraw()
+        if status == 'X':
+            ex1 = Line(Point(2.5,8.5),Point(8.5,2.5))
+            ex2 = Line(Point(2.5,2.5),Point(8.5,8.5))
+            ex1.setWidth(10)
+            ex2.setWidth(10)
+            ex1.setOutline('red')
+            ex2.setOutline('red')
+            ex1.draw(window)
+            ex2.draw(window)
+            list.append(ex1)
+            list.append(ex2)
+        elif status == 'O':
+            oh = Circle(Point(5.5,5.5),3)
+            oh.setWidth(10)
+            oh.setOutline('blue')
+            oh.draw(window)
+            list.append(oh)
+        else:
+            dash = Line(Point(2.5, 5.5), Point(8.5, 5.5))
+            dash.setWidth(10)
+            dash.draw(window)
+            list.append(dash)
+
+
 
 
 main()
