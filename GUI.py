@@ -62,29 +62,47 @@ def gameWindow(window):
 
     All.append(title)
 
-    for i in range(1000):
-        getPosition(window)
+    getPosition(window)
 
-
-
+# Connect Back End to Front End by Returning [sb,bb]
+#should be edited to impliment user turn ^ drawing to screen
+#---------------------------
 def getPosition(window):
     mouse = window.getMouse()
     xPos = mouse.getX()
     yPos = mouse.getY()
-    bX = checkCoord(xPos)
-    bY = checkCoord(yPos)
+    bX = checkCoordBig(xPos)
+    bY = checkCoordBig(yPos)
     bbPos = bX + 3*bY
-    xTemp = (xPos % 3) * 3
-    yTemp = (yPos % 3) * 3
-    sX = checkCoord(xTemp)
-    sY = checkCoord(yTemp)
+    #xTemp = (xPos % 3) * 3
+    while (xPos > 4):
+        xPos = xPos/3
+    while (yPos > 4):
+        yPos = yPos/3
+    #yTemp = (yPos % 3)+1 * 3
+    sX = checkCoordSmall(xPos)
+    sY = checkCoordSmall(yPos)
     sbPos = sX + 3*sY
-    print([sbPos, bbPos])
+    if sbPos <= 8 and bbPos <= 8:
+        print([sbPos, bbPos])
+    else:
+        getPosition(window)
 
+# Helper Function for Get Position
+#----------------------------
+def checkCoordSmall(pos):
+    if (1 <= pos <= 2):
+        return 0
+    elif (2 < pos <= 3):
+        return 1
+    elif (3 < pos <= 4):
+        return 2
+    else:
+        return 100
 
-
-
-def checkCoord(pos):
+# Helper Function for Get Position
+#-----------------------------
+def checkCoordBig(pos):
     if (1 <= pos <= 4):
         return 0
     elif (4 < pos <= 7):
@@ -92,7 +110,17 @@ def checkCoord(pos):
     elif (7 < pos <= 10):
         return 2
     else:
-        return ;
+        return 100
+
+#-------------------
+#def placeSym(xPos, yPos, turn, window, list)
+   # placeX = round(xPos - .5) + .5
+   # placeY = round(yPos - .5) + .5
+   # if turn == 1
+   #     draw X
+   # elif turn == 2
+   #     draw O
+
 
 
 main()
