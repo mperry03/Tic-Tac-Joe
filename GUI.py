@@ -191,6 +191,7 @@ def gameWindow(window, AI):
     filler7 = Rectangle(Point(4+dither, 7+dither), Point(7-dither, 10-dither))
     filler8 = Rectangle(Point(7+dither, 7+dither), Point(10-dither, 10-dither))
     fillers = [filler0, filler1, filler2, filler3, filler4, filler5, filler6, filler7, filler8]
+    drawn = [0,0,0,0,0,0,0,0,0]
     for box in fillers:
         box.setFill('white')
         #box.setOutline('black')
@@ -247,7 +248,7 @@ def gameWindow(window, AI):
                 turnStatement(window, turn, turn_text1, turn_text2)
                 placeSym(xPos, yPos, turn, window, All)
                 statusArray = bigBoard.get_subboard_states()
-                decidedBoard(window, fillers, statusArray, All)
+                decidedBoard(window, fillers, drawn, statusArray, All)
                 winStatus = bigBoard.get_state()
                 validBoards = bigBoard.get_valid_boards()
                 targetBoard(window, targets, validBoards)
@@ -267,10 +268,15 @@ def gameWindow(window, AI):
         xPos = mouse.getX()
         yPos = mouse.getY()
         if (9 <= xPos <= 10) and (10.25 <= yPos <= 10.75):
+            rect = Rectangle(Point(.9, 0), Point(10.2, 10.2))
+            rect.setWidth(0)
+            rect.setFill('white')
+            rect.draw(window)
             for item in All:
                 playing = 0
                 item.undraw()
                 End = False
+            rect.undraw()
             startWindow(window, 0)
 
 # Connect Back End to Front End by Returning [sb,bb]
@@ -381,11 +387,12 @@ def targetBoard(window, targetArray, playables):
             targetArray[i].draw(window)
 
 #Updates the boards with the symbols for each player
-def decidedBoard(window, fillerArray, boardStates, list):
+def decidedBoard(window, fillerArray, fillerDrawn, boardStates, list):
     for i in range(9):
         if boardStates[i] != '_':
-            fillerArray[i].undraw()
-            fillerArray[i].draw(window)
+            if fillerDrawn[i] == 0:
+                fillerArray[i].draw(window)
+                fillerDrawn[i] = 1
             yPos = (i // 3)*3 + 2.5
             xPos = (i % 3)*3 + 2.5
 
