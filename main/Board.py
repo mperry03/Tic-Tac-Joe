@@ -110,16 +110,17 @@ class RecursiveBoard(Board):
             self.boards[i].update_board_state()
             self.board_states[i] = self.boards[i].get_state()
 
-        for player in self.PLAYERS:
-            for pattern in self.WIN_PATTERNS:
-                if self.board_states[pattern[0]] == self.board_states[pattern[1]] == self.board_states[pattern[2]] == player:
-                    self.state = player
         flag = True
         for state in self.board_states:
             if state == '_':
                 flag = False
         if flag:
             self.state = 'T'
+
+        for player in self.PLAYERS:
+            for pattern in self.WIN_PATTERNS:
+                if self.board_states[pattern[0]] == self.board_states[pattern[1]] == self.board_states[pattern[2]] == player:
+                    self.state = player
 
     def is_valid_move(self, coords):
         # Check that:
