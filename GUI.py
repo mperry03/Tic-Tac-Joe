@@ -12,6 +12,8 @@ def main():
     startWindow(win, 1)
 
 
+########################__DRAW Start WINDOW__###################################
+
 def startWindow(window, first):
 
     # Set the title for the start menu
@@ -90,7 +92,8 @@ def startWindow(window, first):
             playing = 1
 
 
-#Create help menu
+########################__DRAW Help WINDOW__###################################
+
 def helpWindow(window):
     help_Title = Text(Point(5.5, 9.5), 'Help Menu')
     help_Title.setStyle('bold')
@@ -194,6 +197,7 @@ def gameWindow(window, AI):
         box.setWidth(0)
         All.append(box)
 
+    #Filler for completed game
     superFiller = Rectangle(Point(.9,0),Point(10.2,10.2))
     superFiller.setFill('white')
     superFiller.setWidth(0)
@@ -210,6 +214,7 @@ def gameWindow(window, AI):
     All.append(turn_text1)
     All.append(turn_text2)
 
+    #Track the game to make updates to the boards
     turn = 1
     playing = 1
     while playing:
@@ -250,6 +255,8 @@ def gameWindow(window, AI):
 # Connect Back End to Front End by Returning [sb,bb]
 # should be edited to impliment user turn ^ drawing to screen
 # ---------------------------
+
+#Get position of mouse click
 def getPosition(xPos, yPos):
 
         bX = checkCoordBig(xPos)
@@ -316,6 +323,7 @@ def placeSym(xPos, yPos, turn, window, list):
         oh.draw(window)
         list.append(oh)
 
+#Determines if the quit button was clicked
 def quitCurrentScreen(window):
 
     quit_position = window.getMouse()
@@ -324,6 +332,7 @@ def quitCurrentScreen(window):
 
     return (9 <= quit_x <= 10) and (10.25 <= quit_y <= 10.75)
 
+#Clears screen of shapes and text
 def clearScreen(start_Title, multiPlayer, multi_Text, playJoe, joe_Text, helps, help_Text):
     start_Title.undraw()
     multiPlayer.undraw()
@@ -333,6 +342,7 @@ def clearScreen(start_Title, multiPlayer, multi_Text, playJoe, joe_Text, helps, 
     helps.undraw()
     help_Text.undraw()
 
+#Prints who's turn it is
 def turnStatement(window, turn, turn_text1, turn_text2 ):
     if turn==1:
         turn_text1.undraw()
@@ -341,14 +351,14 @@ def turnStatement(window, turn, turn_text1, turn_text2 ):
         turn_text2.undraw()
         turn_text1.draw(window)
 
-
+#Hilights the playable boards
 def targetBoard(window, targetArray, playables):
     for i in range(9):
         targetArray[i].undraw()
         if playables[i]:
             targetArray[i].draw(window)
 
-
+#Updates the boards with the symbols for each player
 def decidedBoard(window, fillerArray, boardStates, list):
     for i in range(9):
         if boardStates[i] != '_':
@@ -357,6 +367,7 @@ def decidedBoard(window, fillerArray, boardStates, list):
             yPos = (i // 3)*3 + 2.5
             xPos = (i % 3)*3 + 2.5
 
+            #Adds a red X to board for player 1
             if boardStates[i] == 'X':
                 c = 1.25
                 ex1 = Line(Point(xPos-c,yPos+c),Point(xPos+c,yPos-c))
@@ -370,12 +381,15 @@ def decidedBoard(window, fillerArray, boardStates, list):
                 ex1.draw(window)
                 ex2.draw(window)
 
+            #Adds a blue O to board for player 2
             elif boardStates[i] == 'O':
                 oh = Circle(Point(xPos,yPos),1.25)
                 list.append(oh)
                 oh.setWidth(8)
                 oh.setOutline('blue')
                 oh.draw(window)
+
+            #Adds a dash through small board if the game is drawn
             else:
                 dash = Line(Point(xPos-1,yPos), Point(xPos+1, yPos))
                 list.append(dash)
@@ -389,6 +403,8 @@ def checkWin(window, fill, status, targets, list):
         fill.draw(window)
         for box in targets:
             box.undraw()
+
+        #Replace small board with X if player 1 wins that small board
         if status == 'X':
             ex1 = Line(Point(2.5,8.5),Point(8.5,2.5))
             ex2 = Line(Point(2.5,2.5),Point(8.5,8.5))
@@ -404,6 +420,8 @@ def checkWin(window, fill, status, targets, list):
             list.append(xWin)
             xWin.setSize(34)
             xWin.draw(window)
+
+        #Replace small board with O if player 2 wins that board
         elif status == 'O':
             oh = Circle(Point(5.5,5.5),3)
             oh.setWidth(10)
@@ -414,6 +432,8 @@ def checkWin(window, fill, status, targets, list):
             list.append(oWin)
             oWin.setSize(34)
             oWin.draw(window)
+
+        #Replace small board with dash if that small board is a draw
         else:
             dash = Line(Point(2.5, 5.5), Point(8.5, 5.5))
             dash.setWidth(10)
