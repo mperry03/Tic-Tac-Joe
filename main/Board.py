@@ -59,12 +59,12 @@ class BaseBoard(Board):
         return "".join(self.board_states)
 
     def update_board_state(self):
+        if self.move_count == 9:
+            self.state = 'T'
         for player in self.PLAYERS:
             for pattern in self.WIN_PATTERNS:
                 if self.board_states[pattern[0]] == self.board_states[pattern[1]] == self.board_states[pattern[2]] == player:
                     self.state = player
-        if self.move_count == 9:
-            self.state = 'T'
 
     """
     coords is an array of numbers 0-8 representing coordinates in different layers
