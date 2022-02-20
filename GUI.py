@@ -1,6 +1,8 @@
 from graphics import *
 from main.Board import *
 import time
+import random
+#from main.tictacjoe import *
 
 
 def main():
@@ -70,14 +72,14 @@ def startWindow(window, first):
         # Decides if you click on the multiplayer button
         elif (4 <= x <= 7) and (7 <= y <= 8):
             clearScreen(start_Title, multiPlayer, multi_Text, playJoe, joe_Text, helps, help_Text)
-            gameWindow(window)
+            gameWindow(window, 0)
 
 
         # Decides if you click on the AI button
         elif (4 <= x <= 7) and (5 <= y <= 6):
             clearScreen(start_Title, multiPlayer, multi_Text, playJoe, joe_Text, helps, help_Text)
-            gameWindow(window)
-            ## ENABLE AI CAPABILITY
+            gameWindow(window, 1)
+
 
         # Decides if you click on the help button
         elif (4 <= x <= 7) and (3 <= y <= 4):
@@ -119,9 +121,10 @@ def helpWindow(window):
 ########################__DRAW GAME WINDOW__###################################
 
 # creates the game play window with the 9x9 tic-tac-toe board (very nice)
-def gameWindow(window):
+def gameWindow(window, AI):
 
     bigBoard = instantiate_board(1)
+    #joe = instantiate_AI(bigBoard)
 
 
     # Draw the big board
@@ -220,6 +223,9 @@ def gameWindow(window):
             player = 'O'
         if vals.getX() <= 8 and vals.getY() <= 8:
             place = [int(vals.getX()),int(vals.getY())]
+            #if AI == 1 and player == 'O':
+                #time.sleep(1 + random.random())
+                #place = joe.chooseMove(bigBoard)
             validMove = bigBoard.make_move(place, player)
             if validMove:
                 turnStatement(window, turn, turn_text1, turn_text2)
