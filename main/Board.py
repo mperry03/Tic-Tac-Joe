@@ -39,7 +39,7 @@ class Board(ABC):
         pass
 
     @abstractmethod
-    def make_move(self, coords):
+    def make_move(self, coords, player):
         pass
 
     @abstractmethod
@@ -53,7 +53,6 @@ class BaseBoard(Board):
         self.depth = depth
         self.board_states = ['_'] * 9
         self.move_count = 0
-        self.turn = 'X'
         self.state = '_'
 
     def __str__(self):
@@ -74,21 +73,15 @@ class BaseBoard(Board):
     def is_valid_move(self, coords):
         return self.board_states[coords[-1]] == '_'
 
-    def make_move(self, coords):
+    def make_move(self, coords, player):
         if not self.is_valid_move(coords) or self.state != '_':
             return False
 
-        self.board_states[coords[-1]] = self.turn
+        self.board_states[coords[-1]] = player
 
         # Check for ties or wins
         self.move_count += 1
         self.update_board_state()
-
-        # Switch turn
-        if self.turn == 'X':
-            self.turn = 'O'
-        else:
-            self.turn = 'X'
 
         return True
 
@@ -102,7 +95,6 @@ class RecursiveBoard(Board):
         self.depth = depth
         self.board_states = ['_'] * 9
         self.valid_boards = [True] * 9
-        self.turn = 'X'
         self.state = '_'
 
         self.boards = []
@@ -139,30 +131,143 @@ class RecursiveBoard(Board):
     """
     Returns if the requested move was successful (i.e. was it valid)
     """
-    def make_move(self, coords):
+    def make_move(self, coords, player):
         if not self.is_valid_move(coords) or self.state != '_':
             return False
 
         # Make the move
-        self.boards[coords[-1]].make_move(coords[:-1])
+        if not self.boards[coords[-1]].make_move(coords[:-1], player):
+            return False
 
         # Check for ties or wins
         self.update_board_state()
-
-        # Switch turn
-        if self.turn == 'X':
-            self.turn = 'O'
-        else:
-            self.turn = 'X'
+        print(self.board_states)
 
         # Update valid boards
-        if self.boards[coords[-1]].get_state() == '_':
+        if self.boards[coords[-2]].get_state() == '_':
             self.valid_boards = [False] * 9
             self.valid_boards[coords[-2]] = True
         else:
-            self.valid_boards = [True] * 9
+            for i in range(9):
+                self.valid_boards[i] = self.boards[i].get_state() == '_'
+        print(self.valid_boards)
 
         return True
 
     def get_state(self):
         return self.state
+
+    def get_valid_boards(self):
+        return self.valid_boards
+
+
+T = instantiate_board(1)
+print(T)
+print()
+
+
+print(T.make_move([0, 4], 'X'))
+print(T.get_state())
+print(T)
+print()
+
+print(T.make_move([4, 0], 'O'))
+print(T.get_state())
+print(T)
+print()
+
+print(T.make_move([1, 4], 'X'))
+print(T.get_state())
+print(T)
+print()
+
+print(T.make_move([4, 1], 'O'))
+print(T.get_state())
+print(T)
+print()
+
+
+print(T.make_move([2, 4], 'X'))
+print(T.get_state())
+print(T)
+print()
+
+
+print(T.make_move([4, 2], 'O'))
+print(T.get_state())
+print(T)
+print()
+
+print(T.make_move([0, 0], 'X'))
+print(T.get_state())
+print(T)
+print()
+
+
+print(T.make_move([2, 0], 'O'))
+print(T.get_state())
+print(T)
+print()
+
+
+print(T.make_move([0, 2], 'X'))
+print(T.get_state())
+print(T)
+print()
+
+
+print(T.make_move([6, 0], 'O'))
+print(T.get_state())
+print(T)
+print()
+
+
+print(T.make_move([0, 6], 'X'))
+print(T.get_state())
+print(T)
+print()
+
+
+print(T.make_move([3, 1], 'O'))
+print(T.get_state())
+print(T)
+print()
+
+
+print(T.make_move([0, 3], 'X'))
+print(T.get_state())
+print(T)
+print()
+
+print(T.make_move([5, 1], 'O'))
+print(T.get_state())
+print(T)
+print()
+
+print(T.make_move([1, 5], 'X'))
+print(T.get_state())
+print(T)
+print()
+
+
+print(T.make_move([3, 2], 'O'))
+print(T.get_state())
+print(T)
+print()
+
+
+print(T.make_move([1, 3], 'X'))
+print(T.get_state())
+print(T)
+print()
+
+
+print(T.make_move([5, 2], 'O'))
+print(T.get_state())
+print(T)
+print()
+
+print(T.make_move([5, 2], 'O'))
+print(T.get_state())
+print(T)
+print()
