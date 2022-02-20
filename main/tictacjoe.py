@@ -34,4 +34,19 @@ class AI():
             return random.choice(possibleMoves)
 
     def get_viable_pairs(self, board):
-        state = board.get
+        state = board.get_board_states()
+        valid_pairs = []
+
+        # A valid pair is a 3-tuple:
+        # (winning_combo, gap_coord, player)
+        for player in ['X', 'O']:
+            for combo in self.WIN_PATTERNS:
+                for i in range(3):
+                    flag = True
+                    for j in range(3):
+                        if i == j and board[combo[j]] != '_':
+                            flag = False
+                        elif board[combo[j]] != player:
+                            flag = False
+                    if flag:
+

@@ -48,6 +48,7 @@ class Board(ABC):
     
     @abstractmethod
     def get_board_states(self):
+        pass
 
 
 class BaseBoard(Board):
