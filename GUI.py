@@ -7,8 +7,13 @@ def main():
     startWindow(win)
 
 def startWindow(window):
+<<<<<<< Updated upstream
     # Set the title for the start menu
     start_Title = Text(Point(5.5, 9.5), 'Main Menu')
+=======
+    #Set the title for the start menu
+    start_Title = Text(Point(5.5, 9.5), 'Menu')
+>>>>>>> Stashed changes
     start_Title.setStyle('bold')
     start_Title.setSize(36)
 
@@ -51,7 +56,11 @@ def startWindow(window):
     x = mouse_Position.getX()
     y = mouse_Position.getY()
 
+<<<<<<< Updated upstream
     # Undraw the Game Window
+=======
+    # Undraw the Game Window (Quit button)
+>>>>>>> Stashed changes
     if 9 <= x and x <= 10:
         if 10.25 <= y and y <= 10.75:
             window.close()
@@ -91,6 +100,14 @@ def startWindow(window):
             help.undraw()
             help_Text.undraw()
             helpWindow(window)
+<<<<<<< Updated upstream
+=======
+
+    # if window.getMouse():
+    #     start_Title.undraw()
+    #     multiPlayer.undraw()
+    #     gameWindow(window)
+>>>>>>> Stashed changes
 
 def helpWindow(window):
     #Create title for help menu
@@ -99,7 +116,11 @@ def helpWindow(window):
     help_Title.setSize(36)
     help_Title.draw(window)
 
+<<<<<<< Updated upstream
     #Import image of the rules
+=======
+#Import image of the rules
+>>>>>>> Stashed changes
     rules_Image = Image(Point(5.5, 5.5), 'rules.png')
     rules_Image.draw(window)
 
