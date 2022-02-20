@@ -165,3 +165,6 @@ class RecursiveBoard(Board):
 
     def get_subboards(self):
         return self.boards
+
+    def get_winning_combos(self):
+        return self.WIN_PATTERNS
