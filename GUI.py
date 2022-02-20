@@ -74,13 +74,13 @@ def startWindow(window, first):
         # Decides if you click on the multiplayer button
         elif (4 <= x <= 7) and (7 <= y <= 8):
             clearScreen(start_Title, multiPlayer, multi_Text, playJoe, joe_Text, helps, help_Text)
-            gameWindow(window, 0)
+            gameWindow(window, False)
 
 
         # Decides if you click on the AI button
         elif (4 <= x <= 7) and (5 <= y <= 6):
             clearScreen(start_Title, multiPlayer, multi_Text, playJoe, joe_Text, helps, help_Text)
-            gameWindow(window, 1)
+            gameWindow(window, True)
 
 
         # Decides if you click on the help button
@@ -218,7 +218,7 @@ def gameWindow(window, AI):
     turn = 1
     playing = 1
     while playing:
-        if AI == 0 or turn == 1:
+        if (AI == False) or (turn == 1):
             mouse = window.getMouse()
             xPos = mouse.getX()
             yPos = mouse.getY()
@@ -227,8 +227,8 @@ def gameWindow(window, AI):
             player = 'X'
         else:
             player = 'O'
-        if (vals.getX() <= 8 and vals.getY() <= 8) or (AI == 1 and player == 'O'):
-            if AI == 0 or player == 'X':
+        if (vals.getX() <= 8 and vals.getY() <= 8) or (AI == True and player == 'O'):
+            if (AI == False) or (player == 'X'):
                 place = [int(vals.getX()),int(vals.getY())]
             else:
                 time.sleep(1 + random.random())
@@ -254,7 +254,7 @@ def gameWindow(window, AI):
                 validBoards = bigBoard.get_valid_boards()
                 print(validBoards)
                 targetBoard(window, targets, validBoards)
-                AI = checkWin(window, superFiller, winStatus, targets, All, AI)
+                checkWin(window, superFiller, winStatus, targets, All)
                 turn = (turn + 1) % 2
 
 
@@ -282,6 +282,7 @@ def getPosition(xPos, yPos):
             xTemp = xTemp - 3
         while (yTemp > 4):
             yTemp = yTemp - 3
+
 
         sX = checkCoordSmall(xTemp)
         sY = checkCoordSmall(yTemp)
@@ -411,13 +412,10 @@ def decidedBoard(window, fillerArray, boardStates, list):
                 dash.draw(window)
 
 
-def checkWin(window, fill, status, targets, list, AI):
-    if AI == 1:
-        val = 1
+def checkWin(window, fill, status, targets, list):
 
     if status != '_':
         time.sleep(1)
-        val = 0
         fill.draw(window)
         for box in targets:
             box.undraw()
@@ -461,7 +459,5 @@ def checkWin(window, fill, status, targets, list, AI):
             list.append(draw)
             draw.setSize(34)
             draw.draw(window)
-
-        return val
 
 main()
