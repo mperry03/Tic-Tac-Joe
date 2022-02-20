@@ -141,7 +141,6 @@ class RecursiveBoard(Board):
 
         # Check for ties or wins
         self.update_board_state()
-        print(self.board_states)
 
         # Update valid boards
         if self.boards[coords[-2]].get_state() == '_':
@@ -150,7 +149,6 @@ class RecursiveBoard(Board):
         else:
             for i in range(9):
                 self.valid_boards[i] = self.boards[i].get_state() == '_'
-        print(self.valid_boards)
 
         return True
 
@@ -159,3 +157,7 @@ class RecursiveBoard(Board):
 
     def get_valid_boards(self):
         return self.valid_boards
+
+    def get_subboard_states(self):
+        return self.board_states
+    
