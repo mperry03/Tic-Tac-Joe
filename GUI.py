@@ -145,6 +145,21 @@ def gameWindow(window):
     title.draw(window)
     All.append(title)
 
+    #Make Target Boards
+    target0 = Rectangle(Point(1, 1), Point(4, 4))
+    target1 = Rectangle(Point(4, 1), Point(7, 4))
+    target2 = Rectangle(Point(7, 1), Point(10, 4))
+    target3 = Rectangle(Point(1, 4), Point(4, 7))
+    target4 = Rectangle(Point(4, 4), Point(7, 7))
+    target5 = Rectangle(Point(7, 4), Point(10, 7))
+    target6 = Rectangle(Point(1, 7), Point(4, 10))
+    target7 = Rectangle(Point(4, 7), Point(7, 10))
+    target8 = Rectangle(Point(7, 7), Point(10, 10))
+    targets = [target0, target1, target2, target3, target4, target5, target6, target7, target8]
+    for box in targets:
+        box.setOutline('red')
+        box.setWidth(4)
+
     #Make Turn Statements
     turn_text1 = Text(Point(5.5, .75), 'It is P1s turn.')
     turn_text1.setSize(20)
@@ -263,6 +278,14 @@ def turnStatement(window, turn, turn_text1, turn_text2 ):
     elif turn==0:
         turn_text2.undraw()
         turn_text1.draw(window)
+
+def targetBoard(window, targetArray, playables, prev_move):
+
+    if playables[prev_move]:
+        targetArray[prev_move].draw(window)
+    else:
+        for box in targetArray:
+            box.draw(window)
 
 
 main()
