@@ -45,6 +45,9 @@ class Board(ABC):
     @abstractmethod
     def get_state(self):
         pass
+    
+    @abstractmethod
+    def get_board_states(self):
 
 
 class BaseBoard(Board):
@@ -87,6 +90,9 @@ class BaseBoard(Board):
 
     def get_state(self):
         return self.state
+    
+    def get_board_states(self):
+        return self.board_states
 
 
 class RecursiveBoard(Board):
@@ -160,7 +166,7 @@ class RecursiveBoard(Board):
     def get_valid_boards(self):
         return self.valid_boards
 
-    def get_subboard_states(self):
+    def get_board_states(self):
         return self.board_states
 
     def get_subboards(self):

@@ -247,7 +247,7 @@ def gameWindow(window, AI):
             if validMove:
                 turnStatement(window, turn, turn_text1, turn_text2)
                 placeSym(xPos, yPos, turn, window, All)
-                statusArray = bigBoard.get_subboard_states()
+                statusArray = bigBoard.get_board_states()
                 decidedBoard(window, fillers, drawn, statusArray, All)
                 winStatus = bigBoard.get_state()
                 validBoards = bigBoard.get_valid_boards()
