@@ -2,7 +2,7 @@ from graphics import *
 from main.Board import *
 import time
 import random
-#from main.tictacjoe import *
+from main.tictacjoe import *
 
 
 def main():
@@ -74,13 +74,13 @@ def startWindow(window, first):
         # Decides if you click on the multiplayer button
         elif (4 <= x <= 7) and (7 <= y <= 8):
             clearScreen(start_Title, multiPlayer, multi_Text, playJoe, joe_Text, helps, help_Text)
-            gameWindow(window, 0)
+            gameWindow(window, False)
 
 
         # Decides if you click on the AI button
         elif (4 <= x <= 7) and (5 <= y <= 6):
             clearScreen(start_Title, multiPlayer, multi_Text, playJoe, joe_Text, helps, help_Text)
-            gameWindow(window, 1)
+            gameWindow(window, True)
 
 
         # Decides if you click on the help button
@@ -127,7 +127,7 @@ def helpWindow(window):
 def gameWindow(window, AI):
 
     bigBoard = instantiate_board(1)
-    #joe = instantiate_AI(bigBoard)
+    joe = instantiate_AI()
 
 
     # Draw the big board
@@ -218,19 +218,32 @@ def gameWindow(window, AI):
     turn = 1
     playing = 1
     while playing:
-        mouse = window.getMouse()
-        xPos = mouse.getX()
-        yPos = mouse.getY()
-        vals = getPosition(xPos, yPos)
+        if (AI == False) or (turn == 1):
+            mouse = window.getMouse()
+            xPos = mouse.getX()
+            yPos = mouse.getY()
+            vals = getPosition(xPos, yPos)
         if turn:
             player = 'X'
         else:
             player = 'O'
-        if vals.getX() <= 8 and vals.getY() <= 8:
-            place = [int(vals.getX()),int(vals.getY())]
-            #if AI == 1 and player == 'O':
-                #time.sleep(1 + random.random())
-                #place = joe.chooseMove(bigBoard)
+        if (vals.getX() <= 8 and vals.getY() <= 8) or (AI == True and player == 'O'):
+            if (AI == False) or (player == 'X'):
+                place = [int(vals.getX()),int(vals.getY())]
+            else:
+                time.sleep(1 + random.random())
+                print("joe played")
+                place = joe.chooseMove(bigBoard)
+                small = place[0]
+                big = place[1]
+                bY = big // 3
+                bX = big % 3
+                sY = small // 3
+                sX = small % 3
+                xPos = 3*bX + sX + 1.49
+                yPos = 3*bY + sY + 1.49
+                print(place, xPos, yPos)
+
             validMove = bigBoard.make_move(place, player)
             if validMove:
                 turnStatement(window, turn, turn_text1, turn_text2)
@@ -239,6 +252,7 @@ def gameWindow(window, AI):
                 decidedBoard(window, fillers, statusArray, All)
                 winStatus = bigBoard.get_state()
                 validBoards = bigBoard.get_valid_boards()
+                print(validBoards)
                 targetBoard(window, targets, validBoards)
                 checkWin(window, superFiller, winStatus, targets, All)
                 turn = (turn + 1) % 2
@@ -268,6 +282,7 @@ def getPosition(xPos, yPos):
             xTemp = xTemp - 3
         while (yTemp > 4):
             yTemp = yTemp - 3
+
 
         sX = checkCoordSmall(xTemp)
         sY = checkCoordSmall(yTemp)
@@ -398,6 +413,7 @@ def decidedBoard(window, fillerArray, boardStates, list):
 
 
 def checkWin(window, fill, status, targets, list):
+
     if status != '_':
         time.sleep(1)
         fill.draw(window)
@@ -443,6 +459,5 @@ def checkWin(window, fill, status, targets, list):
             list.append(draw)
             draw.setSize(34)
             draw.draw(window)
-
 
 main()
