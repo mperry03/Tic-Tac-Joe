@@ -51,7 +51,7 @@ def startWindow(window):
     #------------------------
     playing = 1
 
-    while playing == 1:
+    while playing:
         playing = 0
         mouse = window.getMouse()
         x = mouse.getX()
@@ -95,7 +95,7 @@ def helpWindow(window):
 
     # Undraw the help Window
     playing = 1
-    while playing == 1:
+    while playing:
         playing = 0
         if quitCurrentScreen(window):
             help_Title.undraw()
@@ -143,31 +143,32 @@ def gameWindow(window):
     title.setStyle('bold')
     title.setSize(24)
     title.draw(window)
+    All.append(title)
 
     turn = 1
-    All.append(title)
-    for i in range(81):
-        getPosition(window, turn, All)
-        turn = (turn + 1) % 2
+    playing = 1
+    while playing:
+        mouse = window.getMouse()
+        xPos = mouse.getX()
+        yPos = mouse.getY()
+        vals = getPosition(xPos, yPos)
+        if vals.getX() <= 8 and vals.getY() <= 8:
+            placeSym(xPos, yPos, turn, window, All)
+            turn = (turn + 1) % 2
+            turnStatement(window, turn)
 
+        # Undraw the Game Window
+        elif (9 <= xPos <= 10) and (10.25 <= yPos <= 10.75):
+            for item in All:
+                playing = 0
+                item.undraw()
+            startWindow(window)
 
-
-    # Undraw the Game Window
-
-
-    #window.getMouse()
 
 # Connect Back End to Front End by Returning [sb,bb]
 # should be edited to impliment user turn ^ drawing to screen
 # ---------------------------
-def getPosition(window, turn, list):
-    playing = 1
-
-    while playing == 1:
-        playing = 0
-        mouse = window.getMouse()
-        xPos = mouse.getX()
-        yPos = mouse.getY()
+def getPosition(xPos, yPos):
 
         bX = checkCoordBig(xPos)
         bY = checkCoordBig(yPos)
@@ -182,18 +183,8 @@ def getPosition(window, turn, list):
         sX = checkCoordSmall(xTemp)
         sY = checkCoordSmall(yTemp)
         sbPos = sX + 3 * sY
-        if sbPos <= 8 and bbPos <= 8:
-            print([sbPos, bbPos])
-            placeSym(xPos, yPos, turn, window, list)
 
-        elif (9 <= xPos <= 10) and (10.25 <= yPos <= 10.75):
-            for item in list:
-                item.undraw()
-            startWindow(window)
-
-        else:
-            playing = 1
-
+        return Point(sbPos, bbPos)
 
 # Helper Function for Get Position
 # ----------------------------
@@ -253,5 +244,18 @@ def clearScreen(start_Title, multiPlayer, multi_Text, playJoe, joe_Text, helps, 
     joe_Text.undraw()
     helps.undraw()
     help_Text.undraw()
+
+def turnStatement(window, turn):
+    turn_text1 = Text(Point(5.5, .5), 'It is P1s turn.')
+    turn_text1.setSize(16)
+    turn_text2 = Text(Point(5.5, .5), 'It is P2s turn.')
+    turn_text2.setSize(16)
+    if turn==1:
+        turn_text2.undraw()
+        turn_text1.draw(window)
+    elif turn==0:
+        turn_text1.undraw()
+        turn_text2.draw(window)
+
 
 main()
