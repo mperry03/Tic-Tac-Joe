@@ -93,11 +93,17 @@ def startWindow(window):
             helpWindow(window)
 
 def helpWindow(window):
-    help_Title = Text(Point(5.5, 9.5), 'Help Menu')
+    #Create title for help menu
+    help_Title = Text(Point(5.5, 9), 'Help Menu')
     help_Title.setStyle('bold')
     help_Title.setSize(36)
     help_Title.draw(window)
 
+    #Import image of the rules
+    rules_Image = Image(Point(5.5, 5.5), 'rules.png')
+    rules_Image.draw(window)
+
+    #Creates Quit Button
     quit_Button = Text(Point(9.5, 10.5), 'Quit')
     quit_Button.setTextColor('red')
     quit_Button.setSize(18)
@@ -118,6 +124,7 @@ def helpWindow(window):
             help_Title.undraw()
             quit_Box.undraw()
             quit_Button.undraw()
+            rules_Image.undraw()
             startWindow(window)
 
 ########################__DRAW GAME WINDOW__###################################
@@ -182,8 +189,6 @@ def gameWindow(window):
             startWindow(window)
 
     window.getMouse()
-
-
 
 
 main()
