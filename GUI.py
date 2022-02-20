@@ -232,7 +232,6 @@ def gameWindow(window, AI):
                 place = [int(vals.getX()),int(vals.getY())]
             else:
                 time.sleep(1 + random.random())
-                print("joe played")
                 place = joe.chooseMove(bigBoard)
                 small = place[0]
                 big = place[1]
@@ -242,7 +241,6 @@ def gameWindow(window, AI):
                 sX = small % 3
                 xPos = 3*bX + sX + 1.49
                 yPos = 3*bY + sY + 1.49
-                print(place, xPos, yPos)
 
             validMove = bigBoard.make_move(place, player)
             if validMove:
@@ -252,9 +250,8 @@ def gameWindow(window, AI):
                 decidedBoard(window, fillers, statusArray, All)
                 winStatus = bigBoard.get_state()
                 validBoards = bigBoard.get_valid_boards()
-                print(validBoards)
                 targetBoard(window, targets, validBoards)
-                checkWin(window, superFiller, winStatus, targets, All)
+                playing = checkWin(window, superFiller, winStatus, targets, All, joe)
                 turn = (turn + 1) % 2
 
 
@@ -264,7 +261,17 @@ def gameWindow(window, AI):
                 playing = 0
                 item.undraw()
             startWindow(window, 0)
-
+    End = True
+    while End:
+        mouse = window.getMouse()
+        xPos = mouse.getX()
+        yPos = mouse.getY()
+        if (9 <= xPos <= 10) and (10.25 <= yPos <= 10.75):
+            for item in All:
+                playing = 0
+                item.undraw()
+                End = False
+            startWindow(window, 0)
 
 # Connect Back End to Front End by Returning [sb,bb]
 # should be edited to impliment user turn ^ drawing to screen
@@ -412,10 +419,12 @@ def decidedBoard(window, fillerArray, boardStates, list):
                 dash.draw(window)
 
 
-def checkWin(window, fill, status, targets, list):
-
+def checkWin(window, fill, status, targets, list, joe):
+    val = 1
     if status != '_':
         time.sleep(1)
+        val = 0
+        joe.setState(False)
         fill.draw(window)
         for box in targets:
             box.undraw()
@@ -459,5 +468,7 @@ def checkWin(window, fill, status, targets, list):
             list.append(draw)
             draw.setSize(34)
             draw.draw(window)
+    return val
+
 
 main()
