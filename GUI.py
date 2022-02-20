@@ -95,8 +95,10 @@ def helpWindow(window):
     help_Title.draw(window)
 
     #Import image of the rules
-    rules_Image = Image(Point(5.5, 5.5), 'rules.png')
+    rules_Image = Image(Point(5.5, 7), 'rules.png')
     rules_Image.draw(window)
+    example_Image = Image(Point(5.5, 3), 'example.png')
+    example_Image.draw(window)
 
     # Undraw the help Window
     playing = 1
@@ -105,6 +107,7 @@ def helpWindow(window):
         if quitCurrentScreen(window):
             help_Title.undraw()
             rules_Image.undraw()
+            example_Image.undraw()
             startWindow(window, 0)
 
         else:
