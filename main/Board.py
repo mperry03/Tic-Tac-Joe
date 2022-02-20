@@ -71,10 +71,10 @@ class BaseBoard(Board):
     coords[0] is the coordinate on the smallest board, coords[1] is the layer up from that, etc.
     """
     def is_valid_move(self, coords):
-        return self.board_states[coords[-1]] == '_'
+        return self.board_states[coords[-1]] == '_' and self.state == '_'
 
     def make_move(self, coords, player):
-        if not self.is_valid_move(coords) or self.state != '_':
+        if not self.is_valid_move(coords):
             return False
 
         self.board_states[coords[-1]] = player
@@ -126,13 +126,14 @@ class RecursiveBoard(Board):
         # The move is valid within the subboard
         # This is a legal subboard to move to (based on previous moves)
         return self.boards[coords[-1]].is_valid_move(coords[:-1]) \
-               and self.valid_boards[coords[-1]]
+               and self.valid_boards[coords[-1]] \
+               and self.state == '_'
 
     """
     Returns if the requested move was successful (i.e. was it valid)
     """
     def make_move(self, coords, player):
-        if not self.is_valid_move(coords) or self.state != '_':
+        if not self.is_valid_move(coords):
             return False
 
         # Make the move
