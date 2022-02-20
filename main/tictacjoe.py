@@ -1,14 +1,19 @@
 from main.Board import *
-import math
-import time
+#import math
+import random
+#import time
 
-def main():
+class AI():
 
-## from board from gui retrieve valid board states after each move
+    def instantiate_AI(self):
+        return self
 
-## pick random move and give as input
+    def chooseMove(board):
+        possibleMoves = []
+        for i in range(9):
+            for j in range(9):
+                if board.is_valid_move([i,j]):
+                    possibleMoves.append([i,j])
+        return random.choice(possibleMoves)
 
 
-
-
-main()
