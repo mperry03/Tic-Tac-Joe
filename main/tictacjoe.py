@@ -7,6 +7,7 @@ import random
 def instantiate_AI():
     return AI()
 
+
 class AI():
     WIN_PATTERNS = [
         (0, 1, 2),
@@ -18,6 +19,7 @@ class AI():
         (0, 4, 8),
         (2, 4, 6),
     ]
+
     def __init__(self):
         self.state = True
 
@@ -50,3 +52,8 @@ class AI():
                             flag = False
                     if flag:
                         valid_pairs.append((combo, i, player))
+
+A = instantiate_AI()
+T = instantiate_board(0)
+print(T)
+print(A.get_viable_pairs(T))
