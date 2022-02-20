@@ -479,3 +479,7 @@ def checkWin(window, fill, status, targets, list, joe):
 
 
 main()
+
+# Valid pairs testing
+
+
