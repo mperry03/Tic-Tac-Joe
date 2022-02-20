@@ -162,7 +162,7 @@ def gameWindow(window):
     target8 = Rectangle(Point(7, 7), Point(10, 10))
     targets = [target0, target1, target2, target3, target4, target5, target6, target7, target8]
     for box in targets:
-        box.setOutline('red')
+        box.setOutline('light green')
         box.setWidth(6)
         All.append(box)
 
@@ -387,17 +387,29 @@ def checkWin(window, fill, status, targets, list):
             ex2.draw(window)
             list.append(ex1)
             list.append(ex2)
+            xWin = Text(Point(5.5, 1.75), 'Player One Wins!')
+            list.append(xWin)
+            xWin.setSize(34)
+            xWin.draw(window)
         elif status == 'O':
             oh = Circle(Point(5.5,5.5),3)
             oh.setWidth(10)
             oh.setOutline('blue')
             oh.draw(window)
             list.append(oh)
+            oWin = Text(Point(5.5, 1.75), 'Player Two Wins!')
+            list.append(oWin)
+            oWin.setSize(34)
+            oWin.draw(window)
         else:
             dash = Line(Point(2.5, 5.5), Point(8.5, 5.5))
             dash.setWidth(10)
             dash.draw(window)
             list.append(dash)
+            draw = Text(Point(5.5, 1.75), 'Its a Draw!')
+            list.append(draw)
+            draw.setSize(34)
+            draw.draw(window)
 
 
 
