@@ -1,4 +1,5 @@
 from graphics import *
+from main.Board import *
 
 def main():
 
@@ -112,6 +113,9 @@ def helpWindow(window):
 # creates the game play window with the 9x9 tic-tac-toe board (very nice)
 def gameWindow(window):
 
+    bigBoard = instantiate_board(1)
+
+
     # Draw the big board
     BB_line1 = Line(Point(4, 1), Point(4, 10))
     BB_line2 = Line(Point(7, 1), Point(7, 10))
@@ -158,7 +162,7 @@ def gameWindow(window):
     targets = [target0, target1, target2, target3, target4, target5, target6, target7, target8]
     for box in targets:
         box.setOutline('red')
-        box.setWidth(4)
+        box.setWidth(6)
 
     #Make Turn Statements
     turn_text1 = Text(Point(5.5, .75), 'It is P1s turn.')
@@ -177,10 +181,19 @@ def gameWindow(window):
         xPos = mouse.getX()
         yPos = mouse.getY()
         vals = getPosition(xPos, yPos)
+        if turn:
+            player = 'X'
+        else:
+            player = 'O'
         if vals.getX() <= 8 and vals.getY() <= 8:
-            turnStatement(window, turn, turn_text1, turn_text2)
-            placeSym(xPos, yPos, turn, window, All)
-            turn = (turn + 1) % 2
+            place = [int(vals.getX()),int(vals.getY())]
+            validMove = bigBoard.make_move(place, player)
+            if validMove:
+                turnStatement(window, turn, turn_text1, turn_text2)
+                placeSym(xPos, yPos, turn, window, All)
+                validBoards = bigBoard.get_valid_boards()
+                targetBoard(window, targets, validBoards)
+                turn = (turn + 1) % 2
 
 
         # Undraw the Game Window
@@ -202,9 +215,9 @@ def getPosition(xPos, yPos):
         xTemp = xPos
         yTemp = yPos
         while (xTemp > 4):
-            xTemp = xTemp / 3
+            xTemp = xTemp - 3
         while (yTemp > 4):
-            yTemp = yTemp / 3
+            yTemp = yTemp - 3
 
         sX = checkCoordSmall(xTemp)
         sY = checkCoordSmall(yTemp)
@@ -279,13 +292,12 @@ def turnStatement(window, turn, turn_text1, turn_text2 ):
         turn_text2.undraw()
         turn_text1.draw(window)
 
-def targetBoard(window, targetArray, playables, prev_move):
 
-    if playables[prev_move]:
-        targetArray[prev_move].draw(window)
-    else:
-        for box in targetArray:
-            box.draw(window)
+def targetBoard(window, targetArray, playables):
+    for i in range(9):
+        targetArray[i].undraw()
+        if playables[i]:
+            targetArray[i].draw(window)
 
 
 main()
