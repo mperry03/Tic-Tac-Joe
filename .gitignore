@@ -167,3 +167,12 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,windows,macos
+
+# From https://github.com/plkmo/AlphaZero_Connect4
+/src/datasets/*
+/src/evaluator_data/*
+/src/__pycache__/*
+/gamesimages/*
+/src/fb_game_module.py
+/src/play_on_fb.py
+/src/analyze_games_c4.py
