@@ -2,14 +2,15 @@ from graphics import *
 from main.Board import *
 import time
 
-def main():
 
+def main():
+    #Create Window
     win = GraphWin("Tic-Tac-Joe", 800, 800)
     win.setCoords(0, 0, 11, 11)
     startWindow(win, 1)
 
-def startWindow(window, first):
 
+def startWindow(window, first):
 
     # Set the title for the start menu
     start_Title = Text(Point(5.5, 9.5), 'Ultimate Tic-Tac-Toe')
@@ -56,6 +57,7 @@ def startWindow(window, first):
     #------------------------
     playing = 1
 
+    #Wait for user mouse click
     while playing:
         playing = 0
         mouse = window.getMouse()
@@ -86,15 +88,14 @@ def startWindow(window, first):
             playing = 1
 
 
-
+#Create help menu
 def helpWindow(window):
-    #Create title for help menu
     help_Title = Text(Point(5.5, 9.5), 'Help Menu')
     help_Title.setStyle('bold')
     help_Title.setSize(36)
     help_Title.draw(window)
 
-    #Import image of the rules
+    #Import image of the rules and example
     rules_Image = Image(Point(5.5, 7), 'rules.png')
     rules_Image.draw(window)
     example_Image = Image(Point(5.5, 3), 'example.png')
@@ -416,8 +417,6 @@ def checkWin(window, fill, status, targets, list):
             list.append(draw)
             draw.setSize(34)
             draw.draw(window)
-
-
 
 
 main()
