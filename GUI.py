@@ -145,6 +145,16 @@ def gameWindow(window):
     title.draw(window)
     All.append(title)
 
+    #Make Turn Statements
+    turn_text1 = Text(Point(5.5, .75), 'It is P1s turn.')
+    turn_text1.setSize(20)
+    turn_text1.draw(window)
+    turn_text2 = Text(Point(5.5, .75), 'It is P2s turn.')
+    turn_text2.setSize(20)
+
+    All.append(turn_text1)
+    All.append(turn_text2)
+
     turn = 1
     playing = 1
     while playing:
@@ -153,9 +163,10 @@ def gameWindow(window):
         yPos = mouse.getY()
         vals = getPosition(xPos, yPos)
         if vals.getX() <= 8 and vals.getY() <= 8:
+            turnStatement(window, turn, turn_text1, turn_text2)
             placeSym(xPos, yPos, turn, window, All)
             turn = (turn + 1) % 2
-            turnStatement(window, turn)
+
 
         # Undraw the Game Window
         elif (9 <= xPos <= 10) and (10.25 <= yPos <= 10.75):
@@ -217,8 +228,8 @@ def placeSym(xPos, yPos, turn, window, list):
     posX = round(xPos - .5) + .5
     posY = round(yPos - .5) + .5
     if turn == 1:
-        ex1 = Line(Point(posX - .4, posY + .4), Point(posX + .4, posY - .4))
-        ex2 = Line(Point(posX - .4, posY - .4), Point(posX + .4, posY + .4))
+        ex1 = Line(Point(posX - .3, posY + .3), Point(posX + .3, posY - .3))
+        ex2 = Line(Point(posX - .3, posY - .3), Point(posX + .3, posY + .3))
         ex1.draw(window)
         ex2.draw(window)
         list.append(ex1)
@@ -245,17 +256,13 @@ def clearScreen(start_Title, multiPlayer, multi_Text, playJoe, joe_Text, helps, 
     helps.undraw()
     help_Text.undraw()
 
-def turnStatement(window, turn):
-    turn_text1 = Text(Point(5.5, .5), 'It is P1s turn.')
-    turn_text1.setSize(16)
-    turn_text2 = Text(Point(5.5, .5), 'It is P2s turn.')
-    turn_text2.setSize(16)
+def turnStatement(window, turn, turn_text1, turn_text2 ):
     if turn==1:
-        turn_text2.undraw()
-        turn_text1.draw(window)
-    elif turn==0:
         turn_text1.undraw()
         turn_text2.draw(window)
+    elif turn==0:
+        turn_text2.undraw()
+        turn_text1.draw(window)
 
 
 main()
