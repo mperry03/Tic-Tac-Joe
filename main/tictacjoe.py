@@ -26,12 +26,26 @@ class AI():
 
     def chooseMove(self,board):
         if self.state == True:
+            valids = board.get_valid_boards()
             possibleMoves = []
+            priorityMoves = []
+            subboards = board.get_subboards()
             for i in range(9):
                 for j in range(9):
-                    if board.is_valid_move([i,j]):
-                        possibleMoves.append([i,j])
-            return random.choice(possibleMoves)
+                    if valids[j]:
+                        current_board = subboards[j]
+                        viable_gaps = [k[1] for k in self.get_viable_pairs(current_board)]
+                        if board.is_valid_move([i,j]):
+                            possibleMoves.append([i,j])
+                            if i in viable_gaps:
+                                priorityMoves.append([i, j])
+
+
+            if len(priorityMoves) > 0:
+                print(priorityMoves)
+                return random.choice(priorityMoves)
+            else:
+                return random.choice(possibleMoves)
 
     def get_viable_pairs(self, board):
         state = board.get_board_states()
@@ -44,9 +58,11 @@ class AI():
                 for i in range(3):
                     flag = True
                     for j in range(3):
-                        if i == j and board[combo[j]] != '_':
+                        if i == j and state[combo[j]] != '_':
                             flag = False
-                        elif board[combo[j]] != player:
+                        elif state[combo[j]] != player:
                             flag = False
                     if flag:
-                        valid_pairs.append((combo, i, player))
+                        valid_pairs.append([combo, i, player])
+        print(valid_pairs)
+        return valid_pairs
