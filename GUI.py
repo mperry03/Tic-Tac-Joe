@@ -9,7 +9,7 @@ def main():
 def startWindow(window):
 
     # Set the title for the start menu
-    start_Title = Text(Point(5.5, 9.5), 'Main Menu')
+    start_Title = Text(Point(5.5, 9.5), 'Ultimate Tic-Tac-Toe')
     start_Title.setStyle('bold')
     start_Title.setSize(36)
 
