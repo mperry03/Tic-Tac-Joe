@@ -1,7 +1,7 @@
 from graphics import *
-from main.Board import *
+# from main.Board import *
 import time
-import random
+# import random
 from main.tictacjoe import *
 
 
@@ -57,6 +57,7 @@ def startWindow(window, first):
         quit_Box.setOutline('red')
         quit_Box.draw(window)
         first = 0
+
     # ------------------------
     playing = 1
 
@@ -118,7 +119,7 @@ def helpWindow(window):
 
 # #######################__DRAW GAME WINDOW__###################################
 # creates the game play window with the 9x9 tic-tac-toe board (very nice)
-def gameWindow(window, AI):
+def gameWindow(window, ai):
 
     bigBoard = instantiate_board(1)
     joe = instantiate_AI()
@@ -184,7 +185,7 @@ def gameWindow(window, AI):
     filler7 = Rectangle(Point(4+dither, 7+dither), Point(7-dither, 10-dither))
     filler8 = Rectangle(Point(7+dither, 7+dither), Point(10-dither, 10-dither))
     fillers = [filler0, filler1, filler2, filler3, filler4, filler5, filler6, filler7, filler8]
-    drawn = [0,0,0,0,0,0,0,0,0]
+    drawn = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     for box in fillers:
         box.setFill('white')
         box.setWidth(0)
@@ -212,8 +213,8 @@ def gameWindow(window, AI):
     while playing:
         vals = Point(0, 0)
         xPos = 0
-        xPos = 1
-        if (not AI) or (turn == 1):
+        yPos = 0
+        if (not ai) or (turn == 1):
             mouse = window.getMouse()
             xPos = mouse.getX()
             yPos = mouse.getY()
@@ -223,7 +224,7 @@ def gameWindow(window, AI):
         else:
             player = 'O'
         if (vals.getX() <= 8 and vals.getY() <= 8) or (AI and player == 'O'):
-            if (not AI) or (player == 'X'):
+            if (not ai) or (player == 'X'):
                 place = [int(vals.getX()), int(vals.getY())]
             else:
                 time.sleep(1 + random.random())
@@ -249,8 +250,7 @@ def gameWindow(window, AI):
                 playing = checkWin(window, superFiller, winStatus, targets, All, joe)
                 turn = (turn + 1) % 2
 
-
-        # Undraw the Game Window
+        # Un-draw the Game Window
         elif (9 <= xPos <= 10) and (10.25 <= yPos <= 10.75):
             rect = Rectangle(Point(.9, 0), Point(10.2, 10.2))
             rect.setWidth(0)
@@ -281,65 +281,68 @@ def gameWindow(window, AI):
             startWindow(window, 0)
 
 # Connect Back End to Front End by Returning [sb,bb]
-# should be edited to impliment user turn ^ drawing to screen
+# should be edited to implement user turn ^ drawing to screen
 # ---------------------------
 
-#Get position of mouse click
+
+# Get position of mouse click
 def getPosition(xPos, yPos):
 
-        bX = checkCoordBig(xPos)
-        bY = checkCoordBig(yPos)
-        bbPos = bX + 3 * bY
-        xTemp = xPos
-        yTemp = yPos
-        while (xTemp > 4):
-            xTemp = xTemp - 3
-        while (yTemp > 4):
-            yTemp = yTemp - 3
+    bX = checkCoordBig(xPos)
+    bY = checkCoordBig(yPos)
+    bbPos = bX + 3 * bY
+    xTemp = xPos
+    yTemp = yPos
+    while xTemp > 4:
+        xTemp = xTemp - 3
+    while yTemp > 4:
+        yTemp = yTemp - 3
 
+    sX = checkCoordSmall(xTemp)
+    sY = checkCoordSmall(yTemp)
+    sbPos = sX + 3 * sY
 
-        sX = checkCoordSmall(xTemp)
-        sY = checkCoordSmall(yTemp)
-        sbPos = sX + 3 * sY
+    return Point(sbPos, bbPos)
 
-        return Point(sbPos, bbPos)
 
 # Helper Function for Get Position
 # ----------------------------
 def checkCoordSmall(pos):
-    if (1 <= pos <= 2):
+    if 1 <= pos <= 2:
         return 0
-    elif (2 < pos <= 3):
+    elif 2 < pos <= 3:
         return 1
-    elif (3 < pos <= 4):
+    elif 3 < pos <= 4:
         return 2
     else:
         return 100
 
+
 # Helper Function for Get Position
 # -----------------------------
 def checkCoordBig(pos):
-    if (1 <= pos <= 4):
+    if 1 <= pos <= 4:
         return 0
-    elif (4 < pos <= 7):
+    elif 4 < pos <= 7:
         return 1
-    elif (7 < pos <= 10):
+    elif 7 < pos <= 10:
         return 2
     else:
         return 100
 
 
 # Function for drawing x's and o's to GUI
-#-------------------
-def placeSym(xPos, yPos, turn, window, list): ## SCALE = .3
+# -------------------
+def placeSym(xPos, yPos, turn, window, ls):
     posX = round(xPos - .5) + .5
     posY = round(yPos - .5) + .5
     if turn == 1:
-        draw_shape(window, posX, posY, .3, 4, 'X', list)
+        draw_shape(window, posX, posY, .3, 4, 'X', ls)
     elif turn == 0:
-        draw_shape(window, posX, posY, .3, 4, 'O', list)
+        draw_shape(window, posX, posY, .3, 4, 'O', ls)
 
-#Determines if the quit button was clicked
+
+# Determines if the quit button was clicked
 def quitCurrentScreen(window):
 
     quit_position = window.getMouse()
@@ -379,7 +382,7 @@ def targetBoard(window, targetArray, playables):
 
 
 # Updates the boards with the symbols for each player
-def decidedBoard(window, fillerArray, fillerDrawn, boardStates, list):
+def decidedBoard(window, fillerArray, fillerDrawn, boardStates, ls):
     for i in range(9):
         if boardStates[i] != '_':
             print(boardStates[i])
@@ -391,18 +394,18 @@ def decidedBoard(window, fillerArray, fillerDrawn, boardStates, list):
 
             # Adds a red X to board for player 1
             if boardStates[i] == 'X':
-                draw_shape(window, xPos, yPos, 1.25, 8, 'X', list)
+                draw_shape(window, xPos, yPos, 1.25, 8, 'X', ls)
 
             # Adds a blue O to board for player 2
             elif boardStates[i] == 'O':
-                draw_shape(window, xPos, yPos, 1.25, 8, 'O', list)
+                draw_shape(window, xPos, yPos, 1.25, 8, 'O', ls)
 
             # Adds a dash through small board if the game is drawn
             else:
-                draw_shape(window, xPos, yPos, 1, 8, 'T', list)
+                draw_shape(window, xPos, yPos, 1, 8, 'T', ls)
 
 
-def checkWin(window, fill, status, targets, list, joe):
+def checkWin(window, fill, status, targets, ls, joe):
     val = 1
     if status != '_':
         time.sleep(1)
@@ -411,7 +414,7 @@ def checkWin(window, fill, status, targets, list, joe):
         fill.draw(window)
         for box in targets:
             box.undraw()
-        draw_shape(window, 5.5, 5.5, 3, 10, status, list)
+        draw_shape(window, 5.5, 5.5, 3, 10, status, ls)
 
         if status == 'X':
             Win = Text(Point(5.5, 1.75), 'Player One Wins!')
@@ -422,20 +425,20 @@ def checkWin(window, fill, status, targets, list, joe):
         else:
             Win = Text(Point(5.5, 1.75), 'Its a Draw!')
 
-        list.append(Win)
+        ls.append(Win)
         Win.setSize(34)
         Win.draw(window)
 
     return val
 
 
-def draw_shape(window, xPos, yPos, scale, width, shape, list):
+def draw_shape(window, xPos, yPos, scale, width, shape, ls):
     # draw a background
     if shape == 'X':
         ex1 = Line(Point(xPos - scale, yPos + scale), Point(xPos + scale, yPos - scale))
         ex2 = Line(Point(xPos + scale, yPos + scale), Point(xPos - scale, yPos - scale))
-        list.append(ex1)
-        list.append(ex2)
+        ls.append(ex1)
+        ls.append(ex2)
         ex1.setWidth(width)
         ex2.setWidth(width)
         ex1.setOutline('red')
@@ -447,16 +450,12 @@ def draw_shape(window, xPos, yPos, scale, width, shape, list):
         oh.setWidth(width)
         oh.setOutline('blue')
         oh.draw(window)
-        list.append(oh)
+        ls.append(oh)
     else:
         dash = Line(Point(xPos-scale, yPos), Point(xPos+scale, yPos))
         dash.setWidth(width)
         dash.draw(window)
-        list.append(dash)
+        ls.append(dash)
 
 
 main()
-
-# Valid pairs testing
-
-
