@@ -47,5 +47,5 @@ if leap:
 else:
     doomsday = doomsday_dict[month]
 
-weekday = (day - doomsday) % 7 + doomsday_weekday
+weekday = (day - doomsday + doomsday_weekday) % 7
 print("That day was a " + weekday_dict[weekday])
