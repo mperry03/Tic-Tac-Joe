@@ -66,17 +66,17 @@ class AI():
                         valid_pairs.append((combo, i, player))
         return valid_pairs
 
-# A = instantiate_AI()
-# T = instantiate_board(0)
-# print(T)
-# print(A.get_viable_pairs(T))
-#
-# print(T.make_move([0], 'X'))
-# print(A.get_viable_pairs(T))
-#
-# print(T.make_move([3], 'O'))
-# print(A.get_viable_pairs(T))
-#
-# print(T.make_move([1], 'X'))
-# print(A.get_viable_pairs(T))
-# print(T)
+A = instantiate_AI()
+T = instantiate_board(0)
+print(T)
+print(A.get_viable_pairs(T))
+
+print(T.make_move([1], 'X'))
+print(A.get_viable_pairs(T))
+
+print(T.make_move([3], 'O'))
+print(A.get_viable_pairs(T))
+
+print(T.make_move([6], 'O'))
+print(A.get_viable_pairs(T))
+print(T)
