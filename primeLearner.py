@@ -14,9 +14,14 @@ def main():
     while retry:
         correct = True
         print("Type the primes in order!")
+        firstPrime = int(input())
+        start = primeList.index(firstPrime)
+        truncPrimes = []
+        for i in range(start+1, len(primeList)):
+            truncPrimes.append(primeList[i])
         while correct:
             correct_count = 0
-            for prime in primeList:
+            for prime in truncPrimes:
                 primeGuess = int(input ())
                 if primeGuess == prime:
                     correct_count += 1
