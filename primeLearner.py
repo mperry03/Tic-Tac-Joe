@@ -15,9 +15,13 @@ def main():
         correct = True
         print("Type the primes in order!")
         while correct:
+            correct_count = 0
             for prime in primeList:
                 primeGuess = int(input ())
+                if primeGuess == prime:
+                    correct_count += 1
                 if primeGuess != prime:
+                    print("\nYou got", correct_count, "primes correct")
                     print("The next prime is", prime, "\n")
                     correct = False
                     tryAgain = input("Try Again? Y/N: ")
